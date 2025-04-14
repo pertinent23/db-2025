@@ -5,7 +5,7 @@ services:
         restart: always
         ports: 
             - "3306:3306"
-        command: --local-infile=1 --secure-file-priv=/docker-entrypoint-initdb.d
+        command: --local-infile=1  --default-authentication-plugin=mysql_native_password --secure-file-priv=/docker-entrypoint-initdb.d
         environment:
             # DO NOT FORGET TO UPDATE YOUR DATABASE, USERNAME, AND PASSWORD WITH THAT OF YOUR GROUP!
             MYSQL_DATABASE: group05

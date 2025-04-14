@@ -1,0 +1,21 @@
+:root{
+    --prussian-blue: #003049ff;
+    --fire-engine-red: #d62828ff;
+    --orange-wheel: #f77f00ff;
+    --xanthous: #fcbf49ff;
+    --vanilla: #eae2b7ff;
+    --black: #0e0e0eff;
+}
+
+*{
+    position: relative;
+}
+
+html, body{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: var(--vanilla);
+}
