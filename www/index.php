@@ -1,3 +1,7 @@
+<?php 
+    session_start();
+    require_once './_request.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +12,5 @@
 </head>
 <body>
     <b>Bienvenue Au debut du projet 2025</b>
-    <?php 
-        #Test de la connexion à la base de données
-        require_once './_request.php';
-
-        $item = new Arret();
-
-        var_dump($item->search('midi'));
-    ?>
 </body>
 </html>
