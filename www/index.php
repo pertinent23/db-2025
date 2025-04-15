@@ -10,7 +10,11 @@
     <b>Bienvenue Au debut du projet 2025</b>
     <?php 
         #Test de la connexion à la base de données
-        new PDO("mysql:host=db;dbname=group05", "group05", "group05");
+        require_once './_request.php';
+
+        $item = new Arret();
+
+        var_dump($item->search('midi'));
     ?>
 </body>
 </html>
