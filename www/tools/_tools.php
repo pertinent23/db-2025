@@ -20,6 +20,9 @@
                 $val = trim(htmlspecialchars($value));
                 if ($val)
                     $filters[$key] = $val;
+                elseif($val === '0') {
+                    $filters[$key] = '0';
+                } 
             }
         }
 

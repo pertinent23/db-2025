@@ -521,7 +521,7 @@
             return $this->request->fetchObject(self::class);
         }
 
-        public function create(): int {
+        public function create(): string {
             $this->buildRequest("INSERT INTO TRAJET (TRAJET_ID, ITINERAIRE_ID, SERVICE_ID, DIRECTION) VALUES (?, ?, ?, ?)");
             $this->request->execute([
                 $this->getTrajetId(),
@@ -530,7 +530,12 @@
                 $this->getDirection()
             ]);
 
-            return $this->getLastID();
+            return $this->getTrajetId();
+        }
+
+        public function delete(): void {
+            $this->buildRequest("DELETE FROM TRAJET WHERE TRAJET_ID = ?");
+            $this->request->execute([$this->getTrajetId()]);
         }
 
         public function findAvgTime(): array {

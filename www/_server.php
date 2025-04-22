@@ -74,28 +74,72 @@
                 
                 case 'ajout_horaire':
                     $data = _create_filters($_POST, ['action']);
-                    $trajet = Trajet::withData($data['INTINERAIRE_ID']."::".$data['DIRECTION'], 0, intval($data['INTINERAIRE_ID']), intval($data['DIRECTION']));
+                    $trajet = new Trajet();
 
-                    $horaire->setItineraireId($data['INTINERAIRE_ID']);
-                    $horaire->setDirection($data['DIRECTION']);
-                    $horaire->setHoraire($data['HORAIRE']);
+                    $trajet->setItineraireId(intval($data['INTINERAIRE_ID']));
+                    $trajet->setDirection(intval($data['DIRECTION']));
+                    $trajet->setServiceId(intval($data['SERVICE_ID']));
+                    $trajet->setTrajetId($data['INTINERAIRE_ID']."::".$data['SERVICE_ID']."::".$data['DIRECTION']."::".date("H:i"));
 
                     try {
-                        $horaireID = $horaire->create();
+                        $trajet->create();
                     } catch (Exception $e) {
-                        header("Location: ./q7.add.php?error=failed_horaire_creation");
+                        header("Location: ./q7.add.php?error=failed_trajet_creation");
                         break;
+                    }
+
+                    if (_isset_key($data, 'HORAIRE') && trim($data['HORAIRE'])) {
+                        $lines = explode("\n", $data['HORAIRE']);
+                        if(count($lines) > 0) {
+                            foreach ($lines as $line) {
+                                $parts = explode(',', trim($line));
+                                if (count($parts) >= 3) {
+                                    $horraire = Horraire::withData(
+                                        $trajet->getTrajetId(),
+                                        $trajet->getItineraireId(),
+                                        $parts[0],
+                                        $parts[1],
+                                        $parts[2]
+                                    );
+
+                                    try {
+                                        $horraire->create();
+                                    } catch (Exception $e) {
+                                        $trajet->delete();
+                                        header("Location: ./q7.add.php?error=failed_horraire_creation");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     header("Location: ./index.php");
                     break;
+                
+                case 'modifier_arret':
+                    $data = _create_filters($_POST, ['action']);
+                    $arret = new Arret();
+    
+                    $arret->setNom($data['NOM']);
+                    $arret->setLatitude($data['LATITUDE']);
+                    $arret->setLongitude($data['LONGITUDE']);
+    
+                    try {
+                        $arret->update();
+                    } catch (Exception $e) {
+                        header("Location: ./q8.update.php?error=failed_arret_update");
+                        break;
+                    }
+    
+                    header("Location: ./index.php");
+    
+    
+                break;
 
                 default:
                     echo json_encode(['error' => 'Unknown action']);
             }
-
-
-            break;
         
         case 'GET':
             break;

@@ -21,7 +21,7 @@
     <main>
         <form  action="./_server.php" method="POST">
             <input type="hidden" name="action" value="ajout_horaire">
-            <span class="title"> Ajouter des Horraires </span>
+            <span class="title"> Creation d'un trajet </span>
             <div class="form-item">
                 <label for="itineraire_id">Itinéraire: </label>
                 <select name="INTINERAIRE_ID" id="itineraire_id">
@@ -46,6 +46,22 @@
                 </select>
             </div>
             <div class="form-item">
+                <label for="service_id">Service: </label>
+                <select name="SERVICE_ID" id="service_id">
+                    <?php 
+                        $service = new Service();
+                        $serviceList = $service->findAll();
+                        foreach ($serviceList as $ser) {
+                            ?>
+                                <option value="<?= $ser->getID(); ?>">
+                                    <?php echo $ser->getID() . " - " . $ser->getNom(); ?>
+                                </option>
+                            <?php
+                        }
+                    ?>
+                </select>
+            </div>
+            <div class="form-item">
                 <label for="horaire">Horraires:</label>
                 <textarea name="HORAIRE" id="horaire" placeholder="Ex: STOP_ID,harrivé,hdepart"></textarea>
             </div>
@@ -54,8 +70,11 @@
                     <?php 
                         if (_isset_key($_GET, 'error')) {
                             switch ($_GET['error']) {
-                                case 'failed_itineraire_deletion"':
-                                    echo "Erreur lors de la suppréssion.";
+                                case 'failed_trajet_creation"':
+                                    echo "Erreur lors de la création du trajet.";
+                                    break;
+                                case 'failed_horraire_creation':
+                                    echo "Erreur lors de la création de l'horaire.";
                                     break;
                                 default:
                                     echo "Erreur inconnue.";
