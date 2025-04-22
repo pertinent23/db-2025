@@ -1,0 +1,114 @@
+form.header{
+    background-color: var(--prussian-blue);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0px;
+    border-bottom: 4px dashed var(--fire-engine-red);
+    top: 0px;
+    position: sticky;
+    z-index: 100;
+}
+
+form.header .container{
+    max-width: 90%;
+}
+
+form.header .button-container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 20px 0px;
+}
+
+form.header span{
+    color: var(--vanilla);
+    font-size: 0.9em;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+form.header input{
+    margin-top: 15px;
+    outline: none;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 15px;
+}
+
+form.header td, form.header th{
+    border: 5px solid transparent;
+}
+
+form.header button{
+    background-color: var(--fire-engine-red);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    color: var(--prussian-blue);
+    cursor: pointer;
+}
+
+main{
+    width: 100%;
+    background-color: var(--vanilla);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0px;
+    z-index: 10;
+}
+
+main table{
+    border-collapse: collapse;
+    border-radius: 4px;
+    overflow: hidden;
+    min-width: 80%;
+    max-width: 90%;
+    table-layout: fixed;
+}
+
+main thead{
+    background-color: var(--prussian-blue);
+}
+
+main th{
+    padding: 20px 30px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--vanilla);
+    font-weight: 600;
+}
+
+main td{
+    text-align: center;
+    font-size: 0.8em;
+    padding: 10px 0px;
+}
+
+main th, main td{
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+main tbody tr{
+    color: var(--prussian-blue);
+    border-top: 5px solid var(--vanilla);
+}
+
+main tbody tr:hover{
+    color: var(--black);
+}
+
+main tbody tr:nth-child(even){
+    background-color: var(--orange-wheel);
+}
+
+main tbody tr:nth-child(odd){
+    background-color: var(--xanthous);
+}

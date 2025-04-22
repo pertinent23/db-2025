@@ -2,22 +2,36 @@
     error_reporting(E_ALL);
     ini_set("display_errors", 1);
 
+    $__DB_NAME = "group05";
+    $__DB_HOST = "db";
+    $__DB_USERNAME = "group05";
+    $__DB_PASSWORD = "group05";
+    $_PDO;
+
+    try {
+        $_PDO = new PDO(
+            "mysql:dbname=$__DB_NAME;host=$__DB_HOST",
+            $__DB_USERNAME,
+            $__DB_PASSWORD,
+            [
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'"
+            ]
+        );
+    } catch (PDOException $e) {
+        die("Erreur de connexion à la base de données : " . $e->getMessage());
+    }
 
     abstract class Request {
         private PDO $pdo;
         protected PDOStatement $request;
 
-        private string $__DB_NAME = "group05";
-        private string $__DB_HOST = "db";
-        private string $__DB_USERNAME = "group05";
-        private string $__DB_PASSWORD = "group05";
-        
-
         public function __construct() {
-            $this->pdo = new PDO("mysql:dbname=$this->__DB_NAME;host=$this->__DB_HOST", $this->__DB_USERNAME, $this->__DB_PASSWORD, [
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'"
-            ]);
+            global $_PDO;
+            $this->pdo = $_PDO;
+            if (!$this->pdo) {
+                throw new Exception("Database connection failed.");
+            }
         }
 
         protected function buildRequest(string $sql): void {
@@ -303,7 +317,7 @@
             
                 public function getArretId(): int { return $this->ARRET_ID; }
                 public function getArretNom(): string { return $this->ARRET_NOM; }
-                public function getServiceId(): int { return $this->SERVICE_ID; }
+                public function getServiceId(): int|null { return $this->SERVICE_ID; }
                 public function getTotalArrivees(): int { return $this->TOTAL_ARRIVEES; }
                 public function getTotalDeparts(): int { return $this->TOTAL_DEPARTS; }
             }));
@@ -346,13 +360,13 @@
     class Service extends Request {
         private int $ID;
         private string $NOM;
-        private bool $LUNDI;
-        private bool $MARDI;
-        private bool $MERCREDI;
-        private bool $JEUDI;
-        private bool $VENDREDI;
-        private bool $SAMEDI;
-        private bool $DIMANCHE;
+        private int $LUNDI;
+        private int $MARDI;
+        private int $MERCREDI;
+        private int $JEUDI;
+        private int $VENDREDI;
+        private int $SAMEDI;
+        private int $DIMANCHE;
         private string $DATE_DEBUT;
         private string $DATE_FIN;
     
@@ -362,13 +376,13 @@
 
         public static function withData(
             string $nom,
-            bool $lundi,
-            bool $mardi,
-            bool $mercredi,
-            bool $jeudi,
-            bool $vendredi,
-            bool $samedi,
-            bool $dimanche,
+            int $lundi,
+            int $mardi,
+            int $mercredi,
+            int $jeudi,
+            int $vendredi,
+            int $samedi,
+            int $dimanche,
             string $dateDebut,
             string $dateFin
         ): self {
@@ -388,24 +402,24 @@
     
         public function getID(): int { return $this->ID; }
         public function getNom(): string { return $this->NOM; }
-        public function isLundi(): bool { return $this->LUNDI; }
-        public function isMardi(): bool { return $this->MARDI; }
-        public function isMercredi(): bool { return $this->MERCREDI; }
-        public function isJeudi(): bool { return $this->JEUDI; }
-        public function isVendredi(): bool { return $this->VENDREDI; }
-        public function isSamedi(): bool { return $this->SAMEDI; }
-        public function isDimanche(): bool { return $this->DIMANCHE; }
+        public function isLundi(): int { return $this->LUNDI; }
+        public function isMardi(): int { return $this->MARDI; }
+        public function isMercredi(): int { return $this->MERCREDI; }
+        public function isJeudi(): int { return $this->JEUDI; }
+        public function isVendredi(): int { return $this->VENDREDI; }
+        public function isSamedi(): int { return $this->SAMEDI; }
+        public function isDimanche(): int { return $this->DIMANCHE; }
         public function getDateDebut(): string { return $this->DATE_DEBUT; }
         public function getDateFin(): string { return $this->DATE_FIN; }
 
         public function setNom(string $nom): void { $this->NOM = $nom; }
-        public function setLundi(bool $lundi): void { $this->LUNDI = $lundi; }
-        public function setMardi(bool $mardi): void { $this->MARDI = $mardi; }
-        public function setMercredi(bool $mercredi): void { $this->MERCREDI = $mercredi; }
-        public function setJeudi(bool $jeudi): void { $this->JEUDI = $jeudi; }
-        public function setVendredi(bool $vendredi): void { $this->VENDREDI = $vendredi; }
-        public function setSamedi(bool $samedi): void { $this->SAMEDI = $samedi; }
-        public function setDimanche(bool $dimanche): void { $this->DIMANCHE = $dimanche; }
+        public function setLundi(int $lundi): void { $this->LUNDI = $lundi; }
+        public function setMardi(int $mardi): void { $this->MARDI = $mardi; }
+        public function setMercredi(int $mercredi): void { $this->MERCREDI = $mercredi; }
+        public function setJeudi(int $jeudi): void { $this->JEUDI = $jeudi; }
+        public function setVendredi(int $vendredi): void { $this->VENDREDI = $vendredi; }
+        public function setSamedi(int $samedi): void { $this->SAMEDI = $samedi; }
+        public function setDimanche(int $dimanche): void { $this->DIMANCHE = $dimanche; }
         public function setDateDebut(string $dateDebut): void { $this->DATE_DEBUT = $dateDebut; }
         public function setDateFin(string $dateFin): void { $this->DATE_FIN = $dateFin; }
     
@@ -438,7 +452,14 @@
                 $this->getDateFin()
             ]);
 
-            return $this->getLastID();
+            $this->ID = $this->getLastID();
+
+            return $this->getID();
+        }
+
+        public function delete(): void {
+            $this->buildRequest("DELETE FROM SERVICE WHERE ID = ?");
+            $this->request->execute([$this->getID()]);
         }
 
         public function findDateService(): array {
@@ -517,13 +538,13 @@
             $this->request->execute([]);
     
             return $this->request->fetchAll(PDO::FETCH_CLASS, get_class(new class {
-                private int $ITINERAIRE_ID;
-                private string $TRAJET_ID;
-                private int $AVG_STOP_TIME;
+                private int | null $ITINERAIRE_ID;
+                private string | null $TRAJET_ID;
+                private string $AVG_STOP_TIME;
 
-                public function getItineraireId(): int { return $this->ITINERAIRE_ID; }
-                public function getTrajetId(): string { return $this->TRAJET_ID; }
-                public function getAvgStopTime(): int { return $this->AVG_STOP_TIME; }
+                public function getItineraireId(): int | null { return $this->ITINERAIRE_ID; }
+                public function getTrajetId(): string | null { return $this->TRAJET_ID; }
+                public function getAvgStopTime(): string { return $this->AVG_STOP_TIME; }
             }));
         }
     }

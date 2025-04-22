@@ -1,0 +1,80 @@
+main form{
+    min-width: 750px;
+    max-width: calc(90% - 40px);
+    background-color: var(--white);
+    box-shadow: 0px 0px 10px var(--light);
+    margin-top: 20px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px;
+    border-bottom: 8px solid var(--xanthous);
+    padding-bottom: 35px;
+}
+
+main form .title{
+    font-size: 0.9em;
+    text-transform: uppercase;
+    color: var(--prussian-blue);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin: 20px 0px;
+    padding: 15px 20px;
+    color: var(--prussian-blue);
+    border: 2px dashed var(--prussian-blue);
+    border-radius: 5px;
+}
+
+main form .form-item{
+    width: 80%;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+main form .form-item label{
+    font-size: 0.9em;
+    letter-spacing: 0.11em;
+}
+
+main form .form-item input,
+main form .form-item select{
+    outline: none;
+    border: 3px dashed var(--vanilla);
+    margin-left: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+main form .form-item textarea{
+    outline: none;
+    border: 3px dashed var(--vanilla);
+    resize: none;
+    margin-left: 20px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    min-height: 80px;
+    min-width: 100px;
+}
+
+main form .error{
+    color: var(--fire-engine-red);
+    font-size: 0.8em;
+    margin-top: 30px;
+}
+
+main form button {
+    background-color: var(--xanthous);
+    border: none;
+    padding: 15px 25px;
+    border-radius: 5px;
+    color: var(--black);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    margin-top: 30px;
+}

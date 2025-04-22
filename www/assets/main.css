@@ -5,10 +5,14 @@
     --xanthous: #fcbf49ff;
     --vanilla: #eae2b7ff;
     --black: #0e0e0eff;
+    --light: #0e0e0e55;
+    --white: #ffffff;
 }
 
 *{
     position: relative;
+    font-family: Roboto;
+    font-weight: 400;
 }
 
 html, body{
