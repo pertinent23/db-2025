@@ -151,21 +151,19 @@
                     $arret->setLongitude($data['LONGITUDE']);
     
                     try {
-                        $arret->update();
+                        $arret->update(intval($data['OLD_ID']));
                     }
                     catch (InvalidArgumentException $e) {
-                        header("Location: ./q8.update.php?error=invalid_boudary");
+                        header("Location: ./q8.update.php?error=invalid_boudary&ARRET_ID=".$data['OLD_ID']);
                         break;
                     }
                     catch (PDOException $e) {
-                        header("Location: ./q8.update.php?error=failed_arret_update");
+                        header("Location: ./q8.update.php?error=failed_arret_update&ARRET_ID=".$data['OLD_ID']);
                         break;
                     }
     
                     header("Location: ./index.php");
-    
-    
-                break;
+                    break;
 
                 default:
                     echo '<b>unknow action</b>';

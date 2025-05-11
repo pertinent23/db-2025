@@ -39,6 +39,7 @@
         ?>
         <form  action="./_server.php" method="POST">
             <input type="hidden" name="action" value="modifier_arret">
+            <input type="hidden" name="OLD_ID" value="<?= $arret->getID(); ?>">
             <span class="title"> Modifier Arrêt </span>
             <div class="form-item">
                 <label for="arret_id">Id: </label>
@@ -50,11 +51,11 @@
             </div>
             <div class="form-item">
                 <label for="latitude">Latitude:</label>
-                <input type="number" name="LATITUDE" id="latitude" value="<?= $arret->getLatitude(); ?>" required>
+                <input type="number" name="LATITUDE" id="latitude" step="any" value="<?= $arret->getLatitude(); ?>">
             </div>
             <div class="form-item">
                 <label for="longitude">Longitude:</label>
-                <input type="number" name="LONGITUDE" id="longitude" value="<?= $arret->getLongitude(); ?>" required>
+                <input type="number" name="LONGITUDE" id="longitude" step="any" value="<?= $arret->getLongitude(); ?>">
             </div>
             <div class="error">
                 <span>

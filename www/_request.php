@@ -347,14 +347,14 @@
             return $this->getLastID();
         }
 
-        public function update(): void {
+        public function update(int $old_id): void {
             $latMin = 49.5294835476;
             $latMax = 51.4750237087;
             $lonMin = 2.51357303225;
             $lonMax = 6.15665815596;
         
-            $latitude = $this->getLatitude();
-            $longitude = $this->getLongitude();
+            $latitude = floatval($this->getLatitude());
+            $longitude = floatval($this->getLongitude());
         
             if ($latitude < $latMin || $latitude > $latMax || $longitude < $lonMin || $longitude > $lonMax) {
                 throw new InvalidArgumentException("Les coordonnées doivent être situées en Belgique.");
@@ -366,7 +366,7 @@
                 $latitude,
                 $longitude,
                 $this->getID(),
-                $this->getID()
+                $old_id
             ]);
         }
     }
