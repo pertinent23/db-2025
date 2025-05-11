@@ -5,7 +5,7 @@
     switch ($_SERVER['REQUEST_METHOD']) {
         case 'POST':
             if (!_isset_key($_POST, 'action')) {
-                echo json_encode(['error' => 'Missing action parameter']);
+                echo '<b>Missing action parameter</b>';
                 break;
             }
 
@@ -94,12 +94,36 @@
                             foreach ($lines as $line) {
                                 $parts = explode(',', trim($line));
                                 if (count($parts) >= 3) {
+
+                                    $arrive = $parts[1];
+                                    $depart = $parts[2];
+
+                                    if (trim($arrive) && trim($depart)) {
+                                        if (!isValidTime($arrive) || !isValidTime($depart)) {
+                                            $trajet->delete();
+                                            header("Location: ./q7.add.php?error=invalid_horaire_format");
+                                            exit();
+                                        }
+
+                                        $arrive = DateTime::createFromFormat('H:i', $arrive);
+                                        $depart = DateTime::createFromFormat('H:i', $depart);
+
+                                        if ($arrive >= $depart) {
+                                            $trajet->delete();
+                                            header("Location: ./q7.add.php?error=invalid_horaire");
+                                            exit();
+                                        }
+
+                                        $arrive = $arrive->format('H:i');
+                                        $depart = $depart->format('H:i');
+                                    }
+
                                     $horraire = Horraire::withData(
                                         $trajet->getTrajetId(),
                                         $trajet->getItineraireId(),
                                         $parts[0],
-                                        $parts[1],
-                                        $parts[2]
+                                        $arrive,
+                                        $depart
                                     );
 
                                     try {
@@ -122,12 +146,18 @@
                     $arret = new Arret();
     
                     $arret->setNom($data['NOM']);
+                    $arret->setID($data['ID']);
                     $arret->setLatitude($data['LATITUDE']);
                     $arret->setLongitude($data['LONGITUDE']);
     
                     try {
                         $arret->update();
-                    } catch (Exception $e) {
+                    }
+                    catch (InvalidArgumentException $e) {
+                        header("Location: ./q8.update.php?error=invalid_boudary");
+                        break;
+                    }
+                    catch (PDOException $e) {
                         header("Location: ./q8.update.php?error=failed_arret_update");
                         break;
                     }
@@ -138,13 +168,13 @@
                 break;
 
                 default:
-                    echo json_encode(['error' => 'Unknown action']);
+                    echo '<b>unknow action</b>';
             }
         
         case 'GET':
             break;
 
         default:
-            echo json_encode(['error' => 'Invalid request method']);
+            echo '<b>Invalid request parameter</b>';
     }
 ?>

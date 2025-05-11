@@ -28,4 +28,11 @@
 
         return $filters;
     }
+
+    function isValidTime($time) {
+        $dt = DateTime::createFromFormat('H:i', $time);
+        $errors = DateTime::getLastErrors();
+    
+        return $dt !== false && !$errors;
+    }
 ?>

@@ -76,6 +76,12 @@
                                 case 'failed_horraire_creation':
                                     echo "Erreur lors de la création de l'horaire.";
                                     break;
+                                case 'invalid_horaire':
+                                    echo "Erreur: L'horaire d'arrivée doit être inférieur à l'horaire de départ.";
+                                    break;
+                                case 'invalid_horaire_format':
+                                    echo "Erreur: Le format de l'horaire est invalide.";
+                                    break;
                                 default:
                                     echo "Erreur inconnue.";
                             }

@@ -41,6 +41,10 @@
             <input type="hidden" name="action" value="modifier_arret">
             <span class="title"> Modifier Arrêt </span>
             <div class="form-item">
+                <label for="arret_id">Id: </label>
+                <input type="number" name="ID" id="arret_id" value="<?= $arret->getID(); ?>" required>
+            </div>
+            <div class="form-item">
                 <label for="nom">Nom: </label>
                 <input type="text" name="NOM" id="nom" value="<?= $arret->getNom(); ?>" required>
             </div>
@@ -57,8 +61,11 @@
                     <?php 
                         if (_isset_key($_GET, 'error')) {
                             switch ($_GET['error']) {
+                                case 'invalid_boudary':
+                                    echo "Erreur: Les coordonnées sont invalides (doivent être en belgique).";
+                                    break;
                                 case 'failed_arret_update':
-                                    echo "Erreur lors de la mise à jour.";
+                                    echo "Erreur, Id déjà utilisé.";
                                     break;
                                 default:
                                     echo "Erreur inconnue.";

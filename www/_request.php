@@ -41,6 +41,18 @@
         protected function getLastID(): int {
             return $this->pdo->lastInsertId();
         }
+
+        protected function beginTransaction(): void {
+            $this->pdo->beginTransaction();
+        }
+
+        protected function commit(): void {
+            $this->pdo->commit();
+        }
+
+        protected function rollBack(): void {
+            $this->pdo->rollBack();
+        }
     }
 
     class Agence extends Request {
@@ -286,6 +298,7 @@
         public function getLatitude(): string { return $this->LATITUDE; }
         public function getLongitude(): string { return $this->LONGITUDE; }
 
+        public function setID(int $id): void { $this->ID = $id; }
         public function setNom(string $nom): void { $this->NOM = $nom; }
         public function setLatitude(string $latitude): void { $this->LATITUDE = $latitude; }
         public function setLongitude(string $longitude): void { $this->LONGITUDE = $longitude; }
@@ -347,11 +360,12 @@
                 throw new InvalidArgumentException("Les coordonnées doivent être situées en Belgique.");
             }
         
-            $this->buildRequest("UPDATE ARRET SET NOM = ?, LATITUDE = ?, LONGITUDE = ? WHERE ID = ?");
+            $this->buildRequest("UPDATE ARRET SET NOM = ?, LATITUDE = ?, LONGITUDE = ?, ID = ? WHERE ID = ?");
             $this->request->execute([
                 $this->getNom(),
                 $latitude,
                 $longitude,
+                $this->getID(),
                 $this->getID()
             ]);
         }
