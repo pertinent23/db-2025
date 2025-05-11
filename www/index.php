@@ -42,11 +42,11 @@
                 <span>Q6</span>
                 <p>Question 6</p>
             </a>
-            <a href="./q7.add.php">
+            <a href="./q7.delete.php">
                 <span>Q7</span>
                 <p>Question 7: Supprimer un itinéraire</p>
             </a>
-            <a href="./q7.delete.php">
+            <a href="./q7.add.php">
                 <span>Q7</span>
                 <p>Question 7: Ajout d'un trajet</p>
             </a>
